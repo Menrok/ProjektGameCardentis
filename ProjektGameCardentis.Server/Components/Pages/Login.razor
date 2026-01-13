@@ -1,0 +1,32 @@
+@page "/login"
+@inject IAuthService Auth
+@inject NavigationManager Nav
+
+<h3>Logowanie</h3>
+
+<input @bind="username" placeholder="Login" />
+<input type="password" @bind="password" placeholder="Hasło" />
+
+<button @onclick="HandleLogin">Zaloguj</button>
+
+<p>
+    Nie masz konta?
+    <a href="/register">Zarejestruj się</a>
+</p>
+
+<p>@message</p>
+
+@code {
+    string username = "";
+    string password = "";
+    string message = "";
+
+    void HandleLogin()
+    {
+        var result = Auth.Login(username, password);
+        message = result.Message;
+
+        if (result.Success)
+            Nav.NavigateTo("/");
+    }
+}

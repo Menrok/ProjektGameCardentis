@@ -1,0 +1,63 @@
+@page "/register"
+@using ProjektGameCardentis.Application.Interfaces
+@inject IAuthService Auth
+@inject NavigationManager Nav
+
+<h3>Rejestracja</h3>
+
+<div>
+    <input @bind="username" placeholder="Login" />
+</div>
+
+<div>
+    <input type="password" @bind="password" placeholder="Hasło" />
+</div>
+
+<div>
+    <input type="password" @bind="confirmPassword" placeholder="Powtórz hasło" />
+</div>
+
+<button @onclick="HandleRegister">Zarejestruj</button>
+
+<p>@message</p>
+
+<p>
+    Masz już konto?
+    <a href="/login">Zaloguj się</a>
+</p>
+
+@code {
+    string username = "";
+    string password = "";
+    string confirmPassword = "";
+    string message = "";
+
+    void HandleRegister()
+    {
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            message = "Login nie może być pusty.";
+            return;
+        }
+
+        if (password.Length < 4)
+        {
+            message = "Hasło musi mieć co najmniej 4 znaki.";
+            return;
+        }
+
+        if (password != confirmPassword)
+        {
+            message = "Hasła nie są takie same.";
+            return;
+        }
+
+        var result = Auth.Register(username, password);
+        message = result.Message;
+
+        if (result.Success)
+        {
+            Nav.NavigateTo("/login");
+        }
+    }
+}

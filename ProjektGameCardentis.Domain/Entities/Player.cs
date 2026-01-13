@@ -9,27 +9,27 @@ namespace ProjektGameCardentis.Domain.Entities
         public int Attack { get; private set; }
         public int Defense { get; private set; }
 
-        private Player() { }
+        public Deck Deck { get; private set; }
+
+        private Player()
+        {
+            Deck = new Deck();
+        }
 
         public Player(string name)
         {
             Id = Guid.NewGuid();
             Name = name;
-            Health = 100;
-            Attack = 10;
-            Defense = 5;
+            Health = 30;
+            Attack = 0;
+            Defense = 0;
+            Deck = new Deck();
         }
 
         public void TakeDamage(int damage)
         {
-            var effectiveDamage = damage - Defense;
-            if (effectiveDamage < 0)
-                effectiveDamage = 0;
-
-            Health -= effectiveDamage;
-
-            if (Health < 0)
-                Health = 0;
+            var effectiveDamage = Math.Max(0, damage - Defense);
+            Health = Math.Max(0, Health - effectiveDamage);
         }
     }
 }
