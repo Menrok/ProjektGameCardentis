@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProjektGameCardentis.Domain\ProjektGameCardentis.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

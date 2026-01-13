@@ -1,10 +1,14 @@
 # Historia wersji
 
 ## v0.0.0
-Utworzono repozytorium oraz podstawow¹ strukturê rozwi¹zania.  
-Przygotowano projekty odpowiadaj¹ce poszczególnym warstwom architektury bez implementacji logiki biznesowej.
+Utworzono repozytorium oraz podstawowÄ… strukturÄ™ rozwiÄ…zania.  
+Przygotowano projekty odpowiadajÄ…ce poszczegÃ³lnym warstwom architektury bez implementacji logiki biznesowej.
 
 ## v0.0.1
-Uporz¹dkowano strukturê projektu poprzez usuniêcie plików startowych.
-Przygotowanie docelowych folderów dla poszczególnych warstw architektury.
-Utworzenie dokumentacji projektu.
+UporzÄ…dkowano strukturÄ™ projektu poprzez usuniÄ™cie plikÃ³w startowych.  
+Przygotowano docelowe foldery dla poszczegÃ³lnych warstw architektury.  
+Utworzono wstÄ™pnÄ… dokumentacjÄ™ projektu.
+
+## v0.0.2
+Dodano pierwsze klasy domenowe reprezentujÄ…ce podstawowe elementy gry, takie jak karta oraz gracz.  
+Dodano konfiguracjÄ™ zaleÅ¼noÅ›ci pomiÄ™dzy projektami.

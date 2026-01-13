@@ -5,5 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ProjektGameCardentis.Application\ProjektGameCardentis.Application.csproj" />
+  </ItemGroup>
 
 </Project>
