@@ -1,14 +1,17 @@
 using ProjektGameCardentis.Server.Components;
 using ProjektGameCardentis.Application.Interfaces;
-using ProjektGameCardentis.Application.Services;
 using ProjektGameCardentis.Server.Services;
+using Microsoft.EntityFrameworkCore;
+using ProjektGameCardentis.Infrastructure.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-builder.Services.AddSingleton<IAuthService, AuthService>();
-builder.Services.AddSingleton<AuthState>();
+builder.Services.AddScoped<AuthState>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=cardentis.db"));
 
 var app = builder.Build();
 

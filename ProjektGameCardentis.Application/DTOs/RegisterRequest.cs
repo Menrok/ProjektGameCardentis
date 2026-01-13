@@ -1,8 +1,8 @@
-namespace ProjektGameCardentis.Application.DTOs
+namespace ProjektGameCardentis.Application.DTOs;
+
+public class RegisterRequest
 {
-    public class RegisterRequest
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
+    public string Username { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Password { get; set; } = null!;
 }

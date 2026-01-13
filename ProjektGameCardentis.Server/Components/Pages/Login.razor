@@ -4,29 +4,34 @@
 
 <h3>Logowanie</h3>
 
-<input @bind="username" placeholder="Login" />
-<input type="password" @bind="password" placeholder="Hasło" />
+<div>
+    <input placeholder="Login" @bind="model.Username" />
+</div>
 
-<button @onclick="HandleLogin">Zaloguj</button>
+<div>
+    <input type="password" placeholder="Hasło" @bind="model.Password" />
+</div>
 
-<p>
-    Nie masz konta?
-    <a href="/register">Zarejestruj się</a>
-</p>
+<button @onclick="Submit">Zaloguj</button>
 
-<p>@message</p>
+@if (!string.IsNullOrEmpty(message))
+{
+    <p>@message</p>
+}
 
 @code {
-    string username = "";
-    string password = "";
+    LoginRequest model = new();
     string message = "";
 
-    void HandleLogin()
+    async Task Submit()
     {
-        var result = Auth.Login(username, password);
+        var result = await Auth.Login(model);
         message = result.Message;
 
         if (result.Success)
+        {
+            await Task.Delay(300);
             Nav.NavigateTo("/");
+        }
     }
 }
