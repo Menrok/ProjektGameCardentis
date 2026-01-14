@@ -22,3 +22,9 @@ Rozszerzono system uwierzytelniania o integrację z bazą danych SQLite.
 Zaimplementowano podstawową obsługę rejestracji i logowania użytkowników z wykorzystaniem Entity Framework Core.
 Dodano migracje bazy danych oraz mechanizm bezpiecznego hashowania haseł.
 Aktualna wersja stanowi etap przejściowy – dalsze prace obejmą pełne dopracowanie procesu uwierzytelniania oraz jego integrację z pozostałymi mechanikami gry.
+
+## v0.0.5
+Uporządkowano strukturę projektu.  
+Dopracowano interfejs użytkownika ekranów logowania i rejestracji.
+Zaimplementowano szczegółową walidację pól formularzy z wykorzystaniem adnotacji danych oraz komunikatów walidacyjnych przypisanych do poszczególnych pól.
+Uspójniono prezentację błędów walidacji oraz błędów logowania pochodzących z warstwy logiki biznesowej.

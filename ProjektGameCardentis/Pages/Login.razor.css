@@ -1,0 +1,84 @@
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    padding: 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 2.2rem;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+    text-align: center;
+}
+
+.game-title {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    color: #38bdf8;
+}
+
+.form-title {
+    margin: 0.5rem 0 2rem;
+    font-size: 1.2rem;
+    color: #e5e7eb;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 1rem;
+}
+
+.auth-card input:focus {
+    outline: none;
+    border-color: #38bdf8;
+}
+
+.primary-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: none;
+    background: #38bdf8;
+    color: #020617;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #0ea5e9;
+}
+
+.secondary-btn {
+    margin-top: 0.8rem;
+    width: 100%;
+    background: transparent;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 0.7rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.secondary-btn:hover {
+    border-color: #38bdf8;
+    color: #38bdf8;
+}

@@ -1,0 +1,70 @@
+@page "/login"
+@layout AuthLayout
+
+@inject AuthService AuthService
+@inject AuthState AuthState
+@inject NavigationManager Nav
+
+<div class="auth-page">
+    <div class="auth-card">
+
+        <h1 class="game-title">CARDENTIS</h1>
+        <h2 class="form-title">Logowanie</h2>
+
+        <EditForm Model="model" OnValidSubmit="HandleLogin" id="loginForm">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <InputText @bind-Value="model.Username" placeholder="Login" />
+                <ValidationMessage For="@(() => model.Username)" />
+            </div>
+
+            <div class="form-group">
+                <InputText @bind-Value="model.Password" type="password" placeholder="Hasło" />
+                <ValidationMessage For="@(() => model.Password)" />
+            </div>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(loginError))
+        {
+            <div class="login-error">
+                @loginError
+            </div>
+        }
+
+        <button type="submit" form="loginForm" class="secondary-btn">
+            Zaloguj się
+        </button>
+
+        <button class="secondary-btn" @onclick="GoToRegister">
+            Utwórz nowe konto
+        </button>
+
+    </div>
+</div>
+
+@code {
+    private LoginRequest model = new();
+    private string? loginError;
+
+    private async Task HandleLogin()
+    {
+        loginError = null;
+
+        var result = await AuthService.Login(model);
+
+        if (!result.Success)
+        {
+            loginError = result.Message;
+            return;
+        }
+
+        AuthState.Login(result.Message!);
+        Nav.NavigateTo("/game");
+    }
+
+    private void GoToRegister()
+    {
+        Nav.NavigateTo("/register");
+    }
+}
