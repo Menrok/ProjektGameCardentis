@@ -1,0 +1,17 @@
+@page "/game"
+@layout MainLayout
+@inject AuthState AuthState
+@inject NavigationManager Nav
+
+<h1>Gra</h1>
+<p>Tu będzie właściwa gra</p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!AuthState.IsAuthenticated)
+        {
+            Nav.NavigateTo("/login", true);
+        }
+    }
+}

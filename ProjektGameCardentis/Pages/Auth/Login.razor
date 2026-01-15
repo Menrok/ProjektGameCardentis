@@ -63,8 +63,13 @@
         Nav.NavigateTo("/game");
     }
 
-    private void GoToRegister()
+    private void GoToRegister() => Nav.NavigateTo("/register");
+
+    protected override void OnInitialized()
     {
-        Nav.NavigateTo("/register");
+        if (AuthState.IsAuthenticated)
+        {
+            Nav.NavigateTo("/game");
+        }
     }
 }

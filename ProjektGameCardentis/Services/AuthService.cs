@@ -18,6 +18,9 @@ public class AuthService
 
     public async Task<AuthResult> Register(RegisterRequest request)
     {
+        request.Username = request.Username.Trim();
+        request.Email = request.Email.Trim().ToLower();
+
         if (request.Username.Length < 3)
         return AuthResult.Fail("Login musi mieć minimum 3 znaki");
 
@@ -31,9 +34,9 @@ public class AuthService
         {
             Id = Guid.NewGuid(),
             Username = request.Username,
-        Email = request.Email,
+            Email = request.Email,
             CreatedAt = DateTime.UtcNow
-    };
+        };
 
     user.PasswordHash = _hasher.HashPassword(user, request.Password);
     

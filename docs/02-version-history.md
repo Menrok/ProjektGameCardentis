@@ -28,3 +28,9 @@ Uporządkowano strukturę projektu.
 Dopracowano interfejs użytkownika ekranów logowania i rejestracji.
 Zaimplementowano szczegółową walidację pól formularzy z wykorzystaniem adnotacji danych oraz komunikatów walidacyjnych przypisanych do poszczególnych pól.
 Uspójniono prezentację błędów walidacji oraz błędów logowania pochodzących z warstwy logiki biznesowej.
+
+## v0.0.6
+Zaimplementowano mechanizm wylogowywania użytkownika oraz pełny przepływ zakończenia sesji.
+Dodano zabezpieczenie dostępu do widoków aplikacji poprzez kontrolę stanu uwierzytelnienia (guard).
+Wprowadzono główny layout aplikacji dla obszaru gry, obejmujący nagłówek oraz obsługę stanu zalogowanego użytkownika.
+Uproszczono i uporządkowano elementy interfejsu użytkownika odziedziczone z szablonu startowego projektu.
