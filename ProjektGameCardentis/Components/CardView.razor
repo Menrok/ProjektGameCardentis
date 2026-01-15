@@ -1,0 +1,43 @@
+@using ProjektGameCardentis.Entities
+
+<div class="game-card @Card.Type.ToString().ToLower() @(Disabled ? "disabled" : "")"
+     @onclick="HandleClick">
+
+    <div class="card-header">
+        <div class="card-cost">
+            @Card.ManaCost
+        </div>
+
+        <div class="card-title">
+            @Card.Name
+        </div>
+    </div>
+
+    <div class="card-image">
+        <span>IMG</span>
+    </div>
+
+    <div class="card-description">
+        @Card.Description
+    </div>
+
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Card Card { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    private async Task HandleClick()
+    {
+        if (Disabled)
+            return;
+
+        await OnClick.InvokeAsync();
+    }
+}

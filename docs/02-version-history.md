@@ -34,3 +34,9 @@ Zaimplementowano mechanizm wylogowywania użytkownika oraz pełny przepływ zako
 Dodano zabezpieczenie dostępu do widoków aplikacji poprzez kontrolę stanu uwierzytelnienia (guard).
 Wprowadzono główny layout aplikacji dla obszaru gry, obejmujący nagłówek oraz obsługę stanu zalogowanego użytkownika.
 Uproszczono i uporządkowano elementy interfejsu użytkownika odziedziczone z szablonu startowego projektu.
+
+## v0.0.7
+Zaimplementowano podstawowy system walki turowej.
+Dodano obsługę talii, ręki, odrzutu oraz energii gracza.
+Wprowadzono starter deck oraz wizualny komponent kart.
+Dodano prostego przeciwnika (AI) oraz podstawowy flow tury.
