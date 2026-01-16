@@ -36,5 +36,30 @@
 
 .game-content {
     flex: 1;
-    padding: 2rem;
+    padding: 1.5rem 1.5rem 5rem;
+}
+
+.bottom-nav {
+    height: 64px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    background: rgba(2, 6, 23, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.75rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item.active {
+    color: #38bdf8;
 }

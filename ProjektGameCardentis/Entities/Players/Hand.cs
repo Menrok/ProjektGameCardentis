@@ -1,4 +1,4 @@
-namespace ProjektGameCardentis.Entities.Player;
+namespace ProjektGameCardentis.Entities.Players;
 
 public class Hand
 {

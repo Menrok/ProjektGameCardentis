@@ -40,3 +40,11 @@ Zaimplementowano podstawowy system walki turowej.
 Dodano obsługę talii, ręki, odrzutu oraz energii gracza.
 Wprowadzono starter deck oraz wizualny komponent kart.
 Dodano prostego przeciwnika (AI) oraz podstawowy flow tury.
+
+## v0.0.8
+Dodano Playera do bazy danych.
+Rozdzielono dane trwałe gracza od stanu walki poprzez wprowadzenie obiektów runtime.
+Zaimplementowano trwały system talii gracza zapisywany w bazie danych.
+Dodano serwis pobierający aktualnego gracza oraz zaktualizowano ekran profilu i walki.
+Uporządkowano system walki poprzez wydzielenie fabryki przeciwników oraz logiki AI.
+Podzielono aplikacje na nowe widoki.

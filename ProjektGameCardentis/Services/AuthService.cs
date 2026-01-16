@@ -16,13 +16,13 @@ public class AuthService
         _db = db;
     }
 
-    public async Task<AuthResult> Register(RegisterRequest request)
+   public async Task<AuthResult> Register(RegisterRequest request)
     {
         request.Username = request.Username.Trim();
         request.Email = request.Email.Trim().ToLower();
 
         if (request.Username.Length < 3)
-        return AuthResult.Fail("Login musi mieć minimum 3 znaki");
+            return AuthResult.Fail("Login musi mieć minimum 3 znaki");
 
         if (await _db.Users.AnyAsync(u => u.Username == request.Username))
             return AuthResult.Fail("Login jest już zajęty");
@@ -37,15 +37,26 @@ public class AuthService
             Email = request.Email,
             CreatedAt = DateTime.UtcNow
         };
-
-    user.PasswordHash = _hasher.HashPassword(user, request.Password);
     
-    _db.Users.Add(user);
-    await _db.SaveChangesAsync();
+        user.PasswordHash = _hasher.HashPassword(user, request.Password);
 
-    return AuthResult.Ok("Rejestracja zakończona sukcesem");
-}
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            Username = user.Username,
+            Deck = StarterDeckFactory.Create()
+        };
 
+        user.Player = player;
+
+        _db.Users.Add(user);
+        _db.Players.Add(player);
+
+        await _db.SaveChangesAsync();
+
+        return AuthResult.Ok("Rejestracja zakończona sukcesem");
+    }
 
     public async Task<AuthResult> Login(LoginRequest request)
     {

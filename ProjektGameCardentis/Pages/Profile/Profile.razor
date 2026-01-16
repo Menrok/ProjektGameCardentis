@@ -1,0 +1,91 @@
+@page "/profile"
+@layout MainLayout
+
+@using ProjektGameCardentis.Entities.Players
+@using ProjektGameCardentis.Entities.Cards
+@using ProjektGameCardentis.Components
+
+@inject AuthState AuthState
+@inject PlayerService PlayerService
+@inject NavigationManager Nav
+
+<h1 class="profile-title">Profil gracza</h1>
+
+@if (player == null)
+{
+    <p>Ładowanie profilu...</p>
+}
+else
+{
+    <div class="profile-tabs">
+        <button class="tab-btn @(activeTab == Tab.Character ? "active" : "")"
+                @onclick="() => activeTab = Tab.Character">
+            🧍 Postać
+        </button>
+
+        <button class="tab-btn @(activeTab == Tab.Deck ? "active" : "")"
+                @onclick="() => activeTab = Tab.Deck">
+            🃏 Talia
+        </button>
+    </div>
+
+    @if (activeTab == Tab.Character)
+    {
+        <section class="panel">
+            <h2>Informacje</h2>
+
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="label">Nick</span>
+                    <span class="value">@player.Username</span>
+                </div>
+
+                <div class="stat">
+                    <span class="label">Liczba kart w talii</span>
+                    <span class="value">@player.Deck.Cards.Count</span>
+                </div>
+            </div>
+        </section>
+    }
+
+    @if (activeTab == Tab.Deck)
+    {
+        <section class="panel">
+            <h2>Twoja talia (@player.Deck.Cards.Count kart)</h2>
+
+            <div class="deck-grid">
+                @foreach (var card in player.Deck.Cards)
+                {
+                    <CardView Card="card" />
+                }
+            </div>
+        </section>
+    }
+}
+
+@code {
+    private Player? player;
+    private Tab activeTab = Tab.Character;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!AuthState.IsAuthenticated)
+        {
+            Nav.NavigateTo("/login", true);
+            return;
+        }
+
+        player = await PlayerService.GetCurrentPlayer();
+
+        if (player == null)
+        {
+            Nav.NavigateTo("/login", true);
+        }
+    }
+
+    private enum Tab
+    {
+        Character,
+        Deck
+    }
+}

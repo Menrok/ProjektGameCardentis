@@ -22,9 +22,25 @@
         @Body
     </main>
 
+    @if (AuthState.IsAuthenticated && !IsBattleGame)
+    {
+        <nav class="bottom-nav">
+            <NavLink href="/profile" class="nav-item">
+                🧍
+                <span>Profil</span>
+            </NavLink>
+
+            <NavLink href="/battle/select" class="nav-item">
+                ⚔️
+                <span>Walka</span>
+            </NavLink>
+        </nav>
+    }
 </div>
 
 @code {
+    private bool IsBattleGame => Nav.Uri.Contains("/battle/game");
+
     private void Logout()
     {
         AuthState.Logout();

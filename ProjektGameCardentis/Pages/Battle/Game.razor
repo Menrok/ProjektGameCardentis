@@ -1,35 +1,38 @@
+@page "/battle/game"
+@layout MainLayout
+
 @using ProjektGameCardentis.Game.Battle
-@using ProjektGameCardentis.Entities.Player
 @using ProjektGameCardentis.Entities.Cards
 @using ProjektGameCardentis.Components
 
-@page "/game"
-@layout MainLayout
-
 @inject AuthState AuthState
+@inject PlayerService PlayerService
 @inject NavigationManager Nav
 
 <h1>Gra</h1>
 
-@if (battle != null)
+@if (battle == null)
+{
+    <p>Ładowanie walki...</p>
+}
+else
 {
     <h2>Tura: @battle.Turn</h2>
 
     <hr />
 
     <h3>Gracz</h3>
-    <p>Nick: @battle.Player.Username</p>
+    <p>Nick: @playerName</p>
     <p>HP: @battle.Player.Health</p>
     <p>Pancerz: @battle.Player.Armor</p>
     <p>Talia: @battle.Player.Deck.Cards.Count</p>
     <p>Odrzut: @battle.Player.DiscardPile.Cards.Count</p>
     <p>Energia: @battle.Player.Energy / @battle.Player.MaxEnergy</p>
 
-
     <hr />
 
     <h3>Przeciwnik</h3>
-    <p>Nick: @battle.Enemy.Username</p>
+    <p>Nick: AI</p>
     <p>HP: @battle.Enemy.Health</p>
     <p>Pancerz: @battle.Enemy.Armor</p>
 
@@ -47,7 +50,7 @@
             }
         </div>
 
-        <br /><br />
+        <br />
 
         <button @onclick="EndTurn">
             Zakończ turę
@@ -63,7 +66,7 @@
         {
             <p>Przegrałeś</p>
         }
-        else if (!battle.Enemy.IsAlive)
+        else
         {
             <p>Wygrałeś</p>
         }
@@ -72,8 +75,9 @@
 
 @code {
     private BattleState? battle;
+    private string playerName = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (!AuthState.IsAuthenticated)
         {
@@ -81,43 +85,30 @@
             return;
         }
 
-        var player = new Player
+        var player = await PlayerService.GetCurrentPlayer();
+        if (player == null)
         {
-            Id = Guid.NewGuid(),
-            Username = AuthState.Username!,
-            Deck = StarterDeckFactory.Create()
-        };
-        player.Deck.Shuffle();
-
-        var enemy = new Player
-        {
-            Id = Guid.NewGuid(),
-            Username = "AI",
-            Deck = StarterDeckFactory.Create()
-        };
-        enemy.Deck.Shuffle();
-        
-        for (int i = 0; i < 5; i++)
-        {
-            player.DrawCard();
-            enemy.DrawCard();
+            Nav.NavigateTo("/login", true);
+            return;
         }
+
+        playerName = player.Username;
+
+        var battlePlayer = BattlePlayerFactory.Create(player);
+        var enemy = EnemyFactory.CreateBasicEnemy();
 
         battle = new BattleState
         {
-            Player = player,
+            Player = battlePlayer,
             Enemy = enemy
         };
 
-        battle.StartTurn();
+        battle.StartBattle();
     }
 
     private void PlayCard(Card card)
     {
-        if (battle == null)
-            return;
-
-        battle.PlayCard(card);
+        battle?.PlayCard(card);
     }
 
     private void EndTurn()

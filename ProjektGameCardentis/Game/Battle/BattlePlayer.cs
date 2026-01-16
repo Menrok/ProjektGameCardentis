@@ -1,9 +1,8 @@
-namespace ProjektGameCardentis.Entities.Player;
+namespace ProjektGameCardentis.Game.Battle;
 
-public class Player
+public class BattlePlayer
 {
-    public Guid Id { get; set; }
-    public string Username { get; set; } = null!;
+    public Guid PlayerId { get; set; }
 
     public int Health { get; set; } = 30;
     public int Armor { get; set; } = 0;
@@ -11,15 +10,16 @@ public class Player
     public int Energy { get; private set; } = 3;
     public int MaxEnergy { get; private set; } = 10;
 
+    public int BonusDamage { get; set; }
+    public int NextCardCostModifier { get; set; }
+    public int AbsorbDamage { get; set; }
+
     public Deck Deck { get; set; } = new();
     public Hand Hand { get; set; } = new();
     public DiscardPile DiscardPile { get; set; } = new();
 
-    public int BonusDamage { get; set; } = 0;
-    public int NextCardCostModifier { get; set; } = 0;
-    public int AbsorbDamage { get; set; } = 0;
-
     public bool IsAlive => Health > 0;
+
 
     public void StartTurn()
     {
@@ -38,16 +38,16 @@ public class Player
 
     public void DrawCard()
     {
-    var card = Deck.DrawRandom();
+        var card = Deck.DrawRandom();
         if (card != null)
             Hand.Cards.Add(card);
     }
-    
+
     public void SpendEnergy(int amount)
     {
         Energy -= amount;
     }
-    
+
     public void Discard(Card card)
     {
         Hand.Cards.Remove(card);

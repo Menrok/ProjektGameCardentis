@@ -1,4 +1,4 @@
-namespace ProjektGameCardentis.Entities.Player;
+namespace ProjektGameCardentis.Entities.Players;
 
 public class Deck
 {
@@ -24,5 +24,15 @@ public class Deck
         var card = Cards[index];
         Cards.RemoveAt(index);
         return card;
+    }
+
+    public Deck Clone()
+    {
+        return new Deck
+        {
+            Cards = Cards
+                .Select(card => card.Clone())
+                .ToList()
+        };
     }
 }

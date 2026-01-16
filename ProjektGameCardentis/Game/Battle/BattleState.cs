@@ -1,11 +1,11 @@
-using ProjektGameCardentis.Entities;
+using ProjektGameCardentis.Entities.Cards;
 
 namespace ProjektGameCardentis.Game.Battle;
 
 public class BattleState
 {
-    public Player Player { get; set; } = null!;
-    public Player Enemy { get; set; } = null!;
+    public BattlePlayer Player { get; set; } = null!;
+    public BattlePlayer Enemy { get; set; } = null!;
 
     public int Turn { get; private set; } = 1;
     public bool IsPlayerTurn { get; private set; } = true;
@@ -13,8 +13,22 @@ public class BattleState
 
     private bool _isFirstTurn = true;
 
-    public Player CurrentPlayer => IsPlayerTurn ? Player : Enemy;
-    public Player Opponent => IsPlayerTurn ? Enemy : Player;
+    public BattlePlayer CurrentPlayer => IsPlayerTurn ? Player : Enemy;
+    public BattlePlayer Opponent => IsPlayerTurn ? Enemy : Player;
+    
+    public void StartBattle(int startingHandSize = 5)
+    {
+        Player.Deck.Shuffle();
+        Enemy.Deck.Shuffle();
+
+        for (int i = 0; i < startingHandSize; i++)
+        {
+            Player.DrawCard();
+            Enemy.DrawCard();
+        }
+
+        StartTurn();
+    }   
 
     public void StartTurn()
     {
@@ -26,7 +40,7 @@ public class BattleState
 
         CurrentPlayer.StartTurn();
     }
-    
+
     public void EndTurn()
     {
         CurrentPlayer.EndTurn();

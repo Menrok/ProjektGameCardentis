@@ -1,0 +1,33 @@
+.battle-title {
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+}
+
+.battle-options {
+    display: grid;
+    gap: 1rem;
+}
+
+.battle-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.1s ease;
+}
+
+.battle-card:hover {
+    transform: translateY(-2px);
+    border-color: #38bdf8;
+}
+
+.battle-card p {
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+.battle-card.disabled {
+    opacity: 0.4;
+    cursor: default;
+}

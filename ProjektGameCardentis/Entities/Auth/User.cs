@@ -13,4 +13,6 @@ public class User
 
     public string PasswordHash { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
+
+    public Player Player { get; set; } = null!;
 }
