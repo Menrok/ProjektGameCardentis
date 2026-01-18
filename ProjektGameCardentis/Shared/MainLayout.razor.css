@@ -1,13 +1,14 @@
 .game-layout {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     background: radial-gradient(circle at top, #0b1220, #020617);
     color: white;
 }
 
 .game-header {
-    height: 60px;
+    height: 50px;
     padding: 0 2rem;
     display: flex;
     align-items: center;
@@ -22,44 +23,91 @@
 }
 
 .logout-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.75);
+
+    padding: 0.35rem 0.9rem;
+    border-radius: 8px;
+
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 .logout-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.logout-btn:active {
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .game-content {
     flex: 1;
-    padding: 1.5rem 1.5rem 5rem;
+    padding: 0;
+    overflow: hidden; 
 }
 
-.bottom-nav {
-    height: 64px;
+::deep .game-bottom-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    background: rgba(2, 6, 23, 0.95);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: center;
+    pointer-events: none;
 }
 
-.nav-item {
-    color: rgba(255, 255, 255, 0.6);
+::deep .game-bottom-nav-inner {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+::deep .game-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 100px;
+    padding: 4px 8px;
+
+    border-radius: 999px;
+    border: 2px solid #3fa9f5;
+
+    background: rgba(20, 30, 50, 0.9);
+    color: #ffffff;
+
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
     text-decoration: none;
-    font-size: 0.75rem;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+    transition: 
+        background 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-.nav-item.active {
-    color: #38bdf8;
+::deep .game-nav-item:hover {
+    background: rgba(63, 169, 245, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(63, 169, 245, 0.4);
+}
+
+::deep .game-nav-item.active {
+    background: #3fa9f5;
+    color: #0b1220;
+    box-shadow: 0 0 20px rgba(63, 169, 245, 0.8);
 }

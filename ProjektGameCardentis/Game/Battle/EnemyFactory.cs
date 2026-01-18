@@ -1,5 +1,3 @@
-using ProjektGameCardentis.Entities.Players;
-
 namespace ProjektGameCardentis.Game.Battle;
 
 public static class EnemyFactory
@@ -9,15 +7,13 @@ public static class EnemyFactory
         var deck = StarterDeckFactory.Create();
         deck.Shuffle();
 
-        var enemy = new BattlePlayer
+        return new BattlePlayer
         {
             PlayerId = Guid.NewGuid(),
-            Deck = deck
+            Name = "Przeciwnik AI",
+            Deck = deck,
+            Energy = 2,
+            MaxEnergy = 6
         };
-
-        for (int i = 0; i < 5; i++)
-            enemy.DrawCard();
-
-        return enemy;
     }
 }

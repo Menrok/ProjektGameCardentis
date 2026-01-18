@@ -1,48 +1,68 @@
-.profile-title {
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
+.profile-page {
+    height: calc(100vh - 50px - 50px);
+    max-width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-tabs {
     display: flex;
-    gap: 0.5rem;
+    gap: 4px;
+    padding: 4px;
     margin-bottom: 1rem;
+
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
 }
 
 .tab-btn {
     flex: 1;
-    padding: 0.6rem;
+    padding: 0.7rem;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    border-radius: 8px;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.15s ease;
 }
 
 .tab-btn.active {
-    border-color: #38bdf8;
+    background: rgba(56,189,248,0.15);
     color: #38bdf8;
+    box-shadow: inset 0 0 0 1px rgba(56,189,248,0.4);
 }
 
 .panel {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+    flex: 1;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.015)
+    );
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
     padding: 1rem;
+    overflow: hidden;
+}
+
+.panel h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1rem;
 }
 
 .stat {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.8rem;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
+    background: rgba(255,255,255,0.05);
+    padding: 1rem;
+    border-radius: 12px;
 }
 
 .label {
@@ -51,13 +71,58 @@
 }
 
 .value {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 
-.deck-grid {
+.panel-deck {
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-area {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 0.75rem;
-    margin-top: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    padding-top: 1rem;
+    align-content: start;
+}
+
+.card-stack-simple {
+    position: relative;
+    width: 140px;
+    height: 200px;
+}
+
+.card-stack-simple ::deep .card {
+    width: 140px;
+    height: 200px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-stack-simple:hover ::deep .card {
+    transform: scale(1.05);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.65);
+    z-index: 10;
+}
+
+.card-count-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    padding: 2px 6px;
+    border-radius: 999px;
+
+    box-shadow: 0 0 6px rgba(0,0,0,0.6);
+    pointer-events: none;
 }

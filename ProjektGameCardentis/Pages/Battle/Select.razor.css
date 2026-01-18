@@ -4,22 +4,31 @@
 }
 
 .battle-options {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
+    margin-top: 2rem;
 }
 
 .battle-card {
+    width: 100%;
+    max-width: 520px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 14px;
     padding: 1.5rem;
     cursor: pointer;
-    transition: transform 0.1s ease, border-color 0.1s ease;
+    transition:
+        transform 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
 }
 
 .battle-card:hover {
     transform: translateY(-2px);
     border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.06);
 }
 
 .battle-card p {
@@ -28,6 +37,7 @@
 }
 
 .battle-card.disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: default;
+    pointer-events: none;
 }

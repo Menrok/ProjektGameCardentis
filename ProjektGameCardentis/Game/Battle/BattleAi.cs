@@ -2,16 +2,10 @@ namespace ProjektGameCardentis.Game.Battle;
 
 public static class BattleAi
 {
-    public static void PlayTurn(BattleState battle)
+    public static BattlePlan CreatePlan(BattlePlayer ai)
     {
-        var enemy = battle.Enemy;
+        var cards = ai.Hand.Cards.Where(c => c.ManaCost <= ai.Energy).Take(2).ToList();
 
-        var playableCard = enemy.Hand.Cards
-            .FirstOrDefault(c => c.ManaCost <= enemy.Energy);
-
-        if (playableCard != null)
-            battle.PlayCard(playableCard);
-
-        battle.EndTurn();
+        return new BattlePlan(ai.PlayerId, cards);
     }
 }

@@ -19,9 +19,6 @@ public class PlayerService
         if (!_auth.IsAuthenticated || string.IsNullOrEmpty(_auth.Username))
             return null;
 
-        return await _db.Players
-            .Include(p => p.Deck)
-                .ThenInclude(d => d.Cards)
-            .FirstOrDefaultAsync(p => p.Username == _auth.Username);
+        return await _db.Players.AsNoTracking().Include(p => p.Deck).ThenInclude(d => d.Cards).FirstOrDefaultAsync(p => p.Username == _auth.Username);
     }
 }

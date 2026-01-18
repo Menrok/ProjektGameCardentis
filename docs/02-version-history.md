@@ -48,3 +48,10 @@ Zaimplementowano trwały system talii gracza zapisywany w bazie danych.
 Dodano serwis pobierający aktualnego gracza oraz zaktualizowano ekran profilu i walki.
 Uporządkowano system walki poprzez wydzielenie fabryki przeciwników oraz logiki AI.
 Podzielono aplikacje na nowe widoki.
+
+## v0.0.9
+Uproszczono nową logikę walki.
+Wprowadzono deterministyczny model rozliczania rundy oparty na sumowaniu ataku i obrony kart.
+Dodano pola runtime do rozliczania ataku i obrony graczy.
+Zaktualizowano talię startową oraz logikę rozpatrywania rund.
+Dostosowano interfejs walki do nowego modelu (debug atak/obrona, uproszczone planowanie tury).

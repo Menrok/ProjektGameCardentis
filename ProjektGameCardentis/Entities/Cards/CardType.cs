@@ -5,5 +5,5 @@ public enum CardType
     Attack,
     Defense,
     Skill,
-    Reaction
+    Control
 }

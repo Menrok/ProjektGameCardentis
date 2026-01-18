@@ -2,73 +2,29 @@ namespace ProjektGameCardentis.Game.Battle;
 
 public class BattlePlayer
 {
-    public Guid PlayerId { get; set; }
+    public Guid PlayerId { get; init; }
+    public string Name { get; init; } = "";
 
     public int Health { get; set; } = 30;
-    public int Armor { get; set; } = 0;
 
-    public int Energy { get; private set; } = 3;
-    public int MaxEnergy { get; private set; } = 10;
+    public int Energy { get; set; } = 2;
+    public int MaxEnergy { get; set; } = 6;
 
-    public int BonusDamage { get; set; }
-    public int NextCardCostModifier { get; set; }
-    public int AbsorbDamage { get; set; }
+    public int ConsecutivePasses { get; set; }
 
-    public Deck Deck { get; set; } = new();
-    public Hand Hand { get; set; } = new();
-    public DiscardPile DiscardPile { get; set; } = new();
+    public Deck Deck { get; init; } = new();
+    public Hand Hand { get; init; } = new();
+    public DiscardPile DiscardPile { get; init; } = new();
+
+    public int PendingAttack { get; set; }
+    public int PendingDefense { get; set; }
 
     public bool IsAlive => Health > 0;
-
-
-    public void StartTurn()
-    {
-        if (Energy < MaxEnergy)
-            Energy++;
-
-        DrawCard();
-    }
-
-    public void EndTurn()
-    {
-        BonusDamage = 0;
-        NextCardCostModifier = 0;
-        AbsorbDamage = 0;
-    }
 
     public void DrawCard()
     {
         var card = Deck.DrawRandom();
         if (card != null)
             Hand.Cards.Add(card);
-    }
-
-    public void SpendEnergy(int amount)
-    {
-        Energy -= amount;
-    }
-
-    public void Discard(Card card)
-    {
-        Hand.Cards.Remove(card);
-        DiscardPile.Cards.Add(card);
-    }
-
-    public void TakeDamage(int amount)
-    {
-        var absorbedByShield = Math.Min(AbsorbDamage, amount);
-        AbsorbDamage -= absorbedByShield;
-        amount -= absorbedByShield;
-
-        var absorbedByArmor = Math.Min(Armor, amount);
-        Armor -= absorbedByArmor;
-        amount -= absorbedByArmor;
-
-        Health -= amount;
-    }
-
-    public void GainArmor(int amount)
-    {
-        Armor += amount;
     }
 }

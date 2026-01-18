@@ -24,16 +24,16 @@
 
     @if (AuthState.IsAuthenticated && !IsBattleGame)
     {
-        <nav class="bottom-nav">
-            <NavLink href="/profile" class="nav-item">
-                🧍
-                <span>Profil</span>
-            </NavLink>
+        <nav class="game-bottom-nav">
+            <div class="game-bottom-nav-inner">
+                <NavLink href="/profile" class="game-nav-item">
+                    <span class="game-nav-label">Profil</span>
+                </NavLink>
 
-            <NavLink href="/battle/select" class="nav-item">
-                ⚔️
-                <span>Walka</span>
-            </NavLink>
+                <NavLink href="/battle/select" class="game-nav-item">
+                    <span class="game-nav-label">Walka</span>
+                </NavLink>
+            </div>
         </nav>
     }
 </div>

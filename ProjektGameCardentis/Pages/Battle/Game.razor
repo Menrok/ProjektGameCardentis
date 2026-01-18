@@ -1,81 +1,82 @@
 @page "/battle/game"
 @layout MainLayout
-
-@using ProjektGameCardentis.Game.Battle
-@using ProjektGameCardentis.Entities.Cards
-@using ProjektGameCardentis.Components
-
 @inject AuthState AuthState
 @inject PlayerService PlayerService
 @inject NavigationManager Nav
 
-<h1>Gra</h1>
+@using ProjektGameCardentis.Game.Battle
+@using ProjektGameCardentis.Entities.Cards
+@using ProjektGameCardentis.Components;
+
 
 @if (battle == null)
 {
-    <p>Ładowanie walki...</p>
+    <div class="loading">Ładowanie bitwy...</div>
 }
 else
 {
-    <h2>Tura: @battle.Turn</h2>
+    <div class="battle-grid">
 
-    <hr />
+        <div class="left-column">
+            <div class="status-box enemy">
+                <div class="name">@battle.PlayerB.Name</div>
+                <div class="hp">HP: @battle.PlayerB.Health</div>
+                <div class="debug">⚔ @battle.PlayerB.PendingAttack | 🛡 @battle.PlayerB.PendingDefense</div>
+            </div>
 
-    <h3>Gracz</h3>
-    <p>Nick: @playerName</p>
-    <p>HP: @battle.Player.Health</p>
-    <p>Pancerz: @battle.Player.Armor</p>
-    <p>Talia: @battle.Player.Deck.Cards.Count</p>
-    <p>Odrzut: @battle.Player.DiscardPile.Cards.Count</p>
-    <p>Energia: @battle.Player.Energy / @battle.Player.MaxEnergy</p>
-
-    <hr />
-
-    <h3>Przeciwnik</h3>
-    <p>Nick: AI</p>
-    <p>HP: @battle.Enemy.Health</p>
-    <p>Pancerz: @battle.Enemy.Armor</p>
-
-    <hr />
-
-    @if (battle.IsPlayerTurn && !battle.IsFinished)
-    {
-        <h3>Twoja ręka</h3>
-
-        <div class="hand">
-            @foreach (var card in battle.Player.Hand.Cards)
-            {
-                <CardView Card="card"
-                          OnClick="@(() => PlayCard(card))" />
-            }
+            <div class="status-box player">
+                <div class="name">@playerName</div>
+                <div class="hp">HP: @battle.PlayerA.Health</div>
+                <div class="energy">🌀 @battle.PlayerA.Energy / @battle.PlayerA.MaxEnergy</div>
+                <div class="debug">⚔ @battle.PlayerA.PendingAttack | 🛡 @battle.PlayerA.PendingDefense</div>
+            </div>
         </div>
 
-        <br />
+        <div class="center-column">
 
-        <button @onclick="EndTurn">
-            Zakończ turę
-        </button>
-    }
+            <div class="top-zone">
+                <div class="enemy-hand">
+                    @foreach (var _ in battle.PlayerB.Hand.Cards)
+                    {
+                        <div class="enemy-card-back"></div>
+                    }
+                </div>
+            </div>
 
-    @if (battle.IsFinished)
-    {
-        <hr />
-        <h2>KONIEC GRY</h2>
+            <div class="battle-zone">
+                <div class="log">
+                    @foreach (var entry in battle.Log.TakeLast(5))
+                    {
+                        <div>@entry.Message</div>
+                    }
+                </div>
+            </div>
 
-        @if (!battle.Player.IsAlive)
-        {
-            <p>Przegrałeś</p>
-        }
-        else
-        {
-            <p>Wygrałeś</p>
-        }
-    }
+            <div class="bottom-zone">
+                <div class="hand">
+                    @foreach (var card in battle.PlayerA.Hand.Cards)
+                    {
+                        <CardView Card="card" OnClick="@(() => ToggleCard(card))" IsSelected="@selectedCards.Contains(card)" />
+                    }
+                </div>
+            </div>
+
+            <button class="end-turn-btn" @onclick="ConfirmPlan" disabled="@(!CanConfirm)">
+                Gotowy (@selectedCards.Count / 3)
+            </button>
+        </div>
+
+        <div class="right-column">
+            <div class="discard">Odrzut gracza: @battle.PlayerA.DiscardPile.Cards.Count</div>
+            <div class="discard">Odrzut wroga: @battle.PlayerB.DiscardPile.Cards.Count</div>
+        </div>
+    </div>
 }
 
 @code {
     private BattleState? battle;
-    private string playerName = string.Empty;
+    private string playerName = "Gracz";
+    private List<Card> selectedCards = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,42 +86,50 @@ else
             return;
         }
 
-        var player = await PlayerService.GetCurrentPlayer();
-        if (player == null)
+        var dbPlayer = await PlayerService.GetCurrentPlayer();
+        if (dbPlayer == null)
         {
             Nav.NavigateTo("/login", true);
             return;
         }
 
-        playerName = player.Username;
+        playerName = dbPlayer.Username;
 
-        var battlePlayer = BattlePlayerFactory.Create(player);
+        var player = BattlePlayerFactory.Create(dbPlayer);
         var enemy = EnemyFactory.CreateBasicEnemy();
 
         battle = new BattleState
         {
-            Player = battlePlayer,
-            Enemy = enemy
+            PlayerA = player,
+            PlayerB = enemy
         };
 
-        battle.StartBattle();
-    }
-
-    private void PlayCard(Card card)
-    {
-        battle?.PlayCard(card);
-    }
-
-    private void EndTurn()
-    {
-        if (battle == null || battle.IsFinished)
-            return;
-
-        battle.EndTurn();
-
-        if (!battle.IsPlayerTurn && !battle.IsFinished)
+        for (int i = 0; i < 5; i++)
         {
-            BattleAi.PlayTurn(battle);
+            battle.PlayerA.DrawCard();
+            battle.PlayerB.DrawCard();
         }
+    }
+
+    private void ToggleCard(Card card)
+    {
+        if (selectedCards.Contains(card))
+            selectedCards.Remove(card);
+        else if (selectedCards.Count < 3 && selectedCards.Sum(c => c.ManaCost) + card.ManaCost <= battle!.PlayerA.Energy)
+            selectedCards.Add(card);
+    }
+
+    private bool CanConfirm => battle != null && selectedCards.Sum(c => c.ManaCost) <= battle.PlayerA.Energy;
+
+    private void ConfirmPlan()
+    {
+        if (battle == null) return;
+
+        var playerPlan = new BattlePlan(battle.PlayerA.PlayerId, selectedCards.ToList());
+        var aiPlan = BattleAi.CreatePlan(battle.PlayerB);
+
+        BattleResolver.ResolveRound(battle, playerPlan, aiPlan);
+
+        selectedCards.Clear();
     }
 }
