@@ -7,8 +7,8 @@ public class BattlePlayer
 
     public int Health { get; set; } = 30;
 
-    public int Energy { get; set; } = 2;
-    public int MaxEnergy { get; set; } = 6;
+    public int Energy { get; set; } = 3;
+    public int MaxEnergy { get; set; } = 10;
 
     public int ConsecutivePasses { get; set; }
 
@@ -18,6 +18,8 @@ public class BattlePlayer
 
     public int PendingAttack { get; set; }
     public int PendingDefense { get; set; }
+    public int PendingEnergyGain { get; set; }
+    public int PendingCardDraw { get; set; }
 
     public bool IsAlive => Health > 0;
 

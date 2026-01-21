@@ -1,13 +1,12 @@
 @page "/battle/game"
+
 @layout MainLayout
 @inject AuthState AuthState
 @inject PlayerService PlayerService
 @inject NavigationManager Nav
 
 @using ProjektGameCardentis.Game.Battle
-@using ProjektGameCardentis.Entities.Cards
 @using ProjektGameCardentis.Components;
-
 
 @if (battle == null)
 {
@@ -16,7 +15,6 @@
 else
 {
     <div class="battle-grid">
-
         <div class="left-column">
             <div class="status-box enemy">
                 <div class="name">@battle.PlayerB.Name</div>
@@ -33,7 +31,6 @@ else
         </div>
 
         <div class="center-column">
-
             <div class="top-zone">
                 <div class="enemy-hand">
                     @foreach (var _ in battle.PlayerB.Hand.Cards)
@@ -44,31 +41,52 @@ else
             </div>
 
             <div class="battle-zone">
-                <div class="log">
-                    @foreach (var entry in battle.Log.TakeLast(5))
-                    {
-                        <div>@entry.Message</div>
-                    }
-                </div>
+                @if (battle.Phase == BattlePhase.Reveal)
+                {
+                    <div class="battle-center">
+                        <div class="enemy-reveal">
+                            @foreach (var card in battle.RevealedPlayerBCards)
+                            {
+                                <CardView Card="card" IsRevealed="true" />
+                            }
+                        </div>
+
+                        <div class="player-reveal">
+                            @foreach (var card in battle.RevealedPlayerACards)
+                            {
+                                <CardView Card="card" IsRevealed="true" />
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="log">
+                        @foreach (var entry in battle.Log.TakeLast(5))
+                        {
+                            <div>@entry.Message</div>
+                        }
+                    </div>
+                }
             </div>
 
             <div class="bottom-zone">
                 <div class="hand">
                     @foreach (var card in battle.PlayerA.Hand.Cards)
                     {
-                        <CardView Card="card" OnClick="@(() => ToggleCard(card))" IsSelected="@selectedCards.Contains(card)" />
+                        <CardView Card="card" OnClick="@(() => ToggleCard(card))" IsSelected="@selectedCards.Contains(card)" Disabled="@(battle.Phase != BattlePhase.Planning)" />
                     }
                 </div>
             </div>
 
-            <button class="end-turn-btn" @onclick="ConfirmPlan" disabled="@(!CanConfirm)">
+            <button class="end-turn-btn" @onclick="ConfirmPlan" disabled="@(battle.Phase != BattlePhase.Planning || !CanConfirm)">                
                 Gotowy (@selectedCards.Count / 3)
             </button>
         </div>
 
         <div class="right-column">
-            <div class="discard">Odrzut gracza: @battle.PlayerA.DiscardPile.Cards.Count</div>
             <div class="discard">Odrzut wroga: @battle.PlayerB.DiscardPile.Cards.Count</div>
+            <div class="discard">Odrzut gracza: @battle.PlayerA.DiscardPile.Cards.Count</div>
         </div>
     </div>
 }
@@ -101,7 +119,8 @@ else
         battle = new BattleState
         {
             PlayerA = player,
-            PlayerB = enemy
+            PlayerB = enemy,
+            Phase = BattlePhase.Planning
         };
 
         for (int i = 0; i < 5; i++)
@@ -111,25 +130,55 @@ else
         }
     }
 
-    private void ToggleCard(Card card)
-    {
-        if (selectedCards.Contains(card))
-            selectedCards.Remove(card);
-        else if (selectedCards.Count < 3 && selectedCards.Sum(c => c.ManaCost) + card.ManaCost <= battle!.PlayerA.Energy)
-            selectedCards.Add(card);
-    }
+private void ToggleCard(Card card)
+{
+    if (battle?.Phase != BattlePhase.Planning)
+        return;
+
+    if (selectedCards.Contains(card))
+        selectedCards.Remove(card);
+    else if (selectedCards.Count < 3 &&
+             selectedCards.Sum(c => c.ManaCost) + card.ManaCost <= battle!.PlayerA.Energy)
+        selectedCards.Add(card);
+}
+
 
     private bool CanConfirm => battle != null && selectedCards.Sum(c => c.ManaCost) <= battle.PlayerA.Energy;
 
-    private void ConfirmPlan()
+    private async Task ConfirmPlan()
     {
         if (battle == null) return;
 
-        var playerPlan = new BattlePlan(battle.PlayerA.PlayerId, selectedCards.ToList());
+        var playerPlan = new BattlePlan(
+            battle.PlayerA.PlayerId,
+            selectedCards.ToList());
+
         var aiPlan = BattleAi.CreatePlan(battle.PlayerB);
 
-        BattleResolver.ResolveRound(battle, playerPlan, aiPlan);
+        battle.RevealedPlayerACards.Clear();
+        battle.RevealedPlayerBCards.Clear();
+
+        battle.RevealedPlayerACards.AddRange(playerPlan.Cards);
+        battle.RevealedPlayerBCards.AddRange(aiPlan.Cards);
+
+        battle.Phase = BattlePhase.Reveal;
 
         selectedCards.Clear();
+        StateHasChanged();
+
+        await Task.Delay(5000);
+
+        battle.Phase = BattlePhase.Resolving;
+        BattleResolver.ResolveRound(battle, playerPlan, aiPlan);
+
+        battle.RevealedPlayerACards.Clear();
+        battle.RevealedPlayerBCards.Clear();
+
+        if (!battle.IsFinished)
+            battle.Phase = BattlePhase.Planning;
+        else
+            battle.Phase = BattlePhase.Finished;
+
+        StateHasChanged();
     }
 }

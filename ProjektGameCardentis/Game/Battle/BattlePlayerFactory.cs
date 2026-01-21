@@ -9,8 +9,8 @@ public static class BattlePlayerFactory
             PlayerId = player.Id,
             Name = player.Username,
             Deck = player.Deck.Clone(),
-            Energy = 2,
-            MaxEnergy = 6
+            Energy = 3,
+            MaxEnergy = 10
         };
     }
 }

@@ -6,12 +6,12 @@
 
 <div class="battle-options">
     <div class="battle-card" @onclick="StartAiBattle">
-        <h2>🧠 Walka z SI</h2>
+        <h2>Walka z SI</h2>
         <p>Rozpocznij natychmiastową walkę z przeciwnikiem AI</p>
     </div>
 
     <div class="battle-card disabled">
-        <h2>👥 Walka z graczem</h2>
+        <h2>Walka z graczem</h2>
         <p>Tryb dostępny wkrótce</p>
     </div>
 </div>
@@ -20,13 +20,8 @@
     protected override void OnInitialized()
     {
         if (!AuthState.IsAuthenticated)
-        {
             Nav.NavigateTo("/login", true);
-        }
     }
 
-    private void StartAiBattle()
-    {
-        Nav.NavigateTo("/battle/game");
-    }
+    private void StartAiBattle() => Nav.NavigateTo("/battle/game");
 }

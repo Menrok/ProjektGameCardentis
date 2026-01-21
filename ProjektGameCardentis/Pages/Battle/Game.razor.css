@@ -62,20 +62,6 @@
     flex-wrap: nowrap;
 }
 
-.card {
-    height: 200px;
-    aspect-ratio: 3 / 4;
-    flex: 1 1 0;
-    max-width: 140px;
-    min-width: 90px;
-    transition: transform 0.15s ease;
-}
-
-.card:hover {
-    transform: translateY(-12px) scale(1.05);
-    z-index: 10;
-}
-
 .right-column {
     display: flex;
     flex-direction: column;
@@ -138,4 +124,27 @@
         linear-gradient(135deg, #1e293b, #020617);
 
     box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+}
+
+.battle-center {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+}
+
+.player-reveal {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.enemy-reveal {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
 }

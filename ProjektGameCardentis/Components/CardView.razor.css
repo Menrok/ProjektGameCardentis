@@ -87,3 +87,20 @@
     transform: translateY(-12px) scale(1.05);
     z-index: 10;
 }
+
+.game-card.revealed {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 2px #22c55e, 0 10px 30px rgba(0,0,0,0.6);
+    animation: revealPop 0.25s ease-out;
+}
+
+@keyframes revealPop {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}

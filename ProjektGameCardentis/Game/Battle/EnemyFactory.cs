@@ -12,8 +12,8 @@ public static class EnemyFactory
             PlayerId = Guid.NewGuid(),
             Name = "Przeciwnik AI",
             Deck = deck,
-            Energy = 2,
-            MaxEnergy = 6
+            Energy = 3,
+            MaxEnergy = 10
         };
     }
 }

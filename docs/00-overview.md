@@ -1,31 +1,31 @@
-# Informacje ogólne o projekcie
+# Informacje ogÃ³lne o projekcie
 
 ## Dane podstawowe
 
 Nazwa projektu: Cardentis  
 Typ projektu: Projekt indywidualny  
-Rodzaj gry: Gra webowa – karciana gra RPG z trybem multiplayer  
-Platforma: Przegl¹darka internetowa (SPA)
+Rodzaj gry: Gra webowa â€“ karciana gra RPG z elementami strategicznymi  
+Platforma: PrzeglÄ…darka internetowa (SPA)
 
 ## Wykorzystywane technologie
 
-- Backend / logika gry: C# – Blazor Server (ASP.NET Core)
+- Backend / logika gry: C# â€“ Blazor Server (ASP.NET Core)
 - Frontend: Blazor Server (interfejs webowy, SPA)
 - Komunikacja w czasie rzeczywistym: SignalR
 - Baza danych: SQLite (Entity Framework Core)
 
 ## Opis koncepcji gry
 
-Cardentis jest karcian¹ gr¹ RPG, w której gracz wciela siê w postaæ rozwijan¹ poprzez:
+Cardentis jest karcianÄ… grÄ… RPG, w ktÃ³rej gracz wciela siÄ™ w postaÄ‡ rozwijanÄ… poprzez:
 
 - zdobywanie i kolekcjonowanie kart,
-- udzia³ w turowych walkach,
-- zarz¹dzanie w³asn¹ tali¹ kart,
-- ulepszanie postaci oraz posiadanych kart.
+- udziaÅ‚ w turowych walkach,
+- zarzÄ…dzanie wÅ‚asnÄ… taliÄ… kart,
+- rozwÃ³j postaci oraz posiadanych kart.
 
-Rozgrywka opiera siê na podejmowaniu decyzji strategicznych, planowaniu ruchów oraz odpowiednim doborze kart do aktualnej sytuacji w grze.
+Rozgrywka opiera siÄ™ na podejmowaniu decyzji strategicznych, planowaniu ruchÃ³w oraz odpowiednim doborze kart do aktualnej sytuacji w grze.
 
-Gra wykorzystuje turowy system rozgrywki, w którym gracze wykonuj¹ swoje akcje naprzemiennie.
+Gra wykorzystuje turowy system rozgrywki, w ktÃ³rym gracze planujÄ… swoje ruchy, a nastÄ™pnie nastÄ™puje wspÃ³lne rozliczenie rundy.
 
-Podstawowym trybem gry jest multiplayer 1v1, w którym dwóch graczy rywalizuje ze sob¹ w czasie rzeczywistym.  
-Opcjonalnie mo¿liwe jest zaimplementowanie trybu singleplayer jako rozszerzenia projektu.
+Podstawowym trybem gry jest multiplayer 1v1, w ktÃ³rym dwÃ³ch graczy rywalizuje ze sobÄ… w czasie rzeczywistym.  
+Opcjonalnie moÅ¼liwe jest zaimplementowanie trybu singleplayer jako rozszerzenia projektu.

@@ -1,9 +1,7 @@
 @page "/profile"
 @layout MainLayout
 
-@using ProjektGameCardentis.Entities.Players
-@using ProjektGameCardentis.Entities.Cards
-@using ProjektGameCardentis.Components
+@using ProjektGameCardentis.Components;
 
 @inject AuthState AuthState
 @inject PlayerService PlayerService
@@ -18,13 +16,11 @@ else
     <div class="profile-page">
 
         <div class="profile-tabs">
-            <button class="tab-btn @(activeTab == Tab.Character ? "active" : "")"
-                    @onclick="() => activeTab = Tab.Character">
+            <button class="tab-btn @(activeTab == Tab.Character ? "active" : "")" @onclick="() => activeTab = Tab.Character">
                 Postać
             </button>
 
-            <button class="tab-btn @(activeTab == Tab.Deck ? "active" : "")"
-                    @onclick="() => activeTab = Tab.Deck">
+            <button class="tab-btn @(activeTab == Tab.Deck ? "active" : "")" @onclick="() => activeTab = Tab.Deck">
                 Talia
             </button>
         </div>
@@ -53,28 +49,24 @@ else
             <section class="panel panel-deck">
                 <h2>Twoja talia (@player.Deck.Cards.Count kart)</h2>
 
-<div class="deck-area">
-    @foreach (var group in player.Deck.Cards
-        .OrderBy(c => c.Type)
-        .ThenBy(c => c.Name)
-        .GroupBy(c => c.Name))
-    {
-        var count = group.Count();
-        var card = group.First();
+                <div class="deck-area">
+                    @foreach (var group in player.Deck.Cards.OrderBy(c => c.Type).ThenBy(c => c.Name).GroupBy(c => c.Name))
+                    {
+                        var count = group.Count();
+                        var card = group.First();
 
-        <div class="card-stack-simple">
-            <CardView Card="card" />
+                        <div class="card-stack-simple">
+                            <CardView Card="card" />
 
-            @if (count > 1)
-            {
-                <div class="card-count-badge">
-                    ×@count
+                            @if (count > 1)
+                            {
+                                <div class="card-count-badge">
+                                    ×@count
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
-            }
-        </div>
-    }
-</div>
-
             </section>
         }
     </div>

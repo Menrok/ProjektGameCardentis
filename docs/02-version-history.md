@@ -55,3 +55,15 @@ Wprowadzono deterministyczny model rozliczania rundy oparty na sumowaniu ataku i
 Dodano pola runtime do rozliczania ataku i obrony graczy.
 Zaktualizowano talię startową oraz logikę rozpatrywania rund.
 Dostosowano interfejs walki do nowego modelu (debug atak/obrona, uproszczone planowanie tury).
+
+## v0.1.0
+Zamknięto etap budowy fundamentów aplikacji i osiągnięto pierwszy grywalny prototyp.
+Zaimplementowano kompletny przepływ walki turowej, obejmujący:
+- wybór kart przez gracza,
+- planowanie tury,
+- ujawnianie kart obu stron,
+- rozliczanie obrażeń i obrony,
+- aktualizację stanu graczy.
+Dodano przeciwnika sterowanego przez AI oraz starter deck.
+Zaimplementowano pełną obsługę runtime’owego stanu walki.
+Ustabilizowano strukturę projektu oraz interfejs użytkownika ekranu walki.

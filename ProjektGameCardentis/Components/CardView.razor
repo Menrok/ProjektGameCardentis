@@ -1,7 +1,6 @@
 @using ProjektGameCardentis.Entities
 
-<div class="game-card @Card.Type.ToString().ToLower() @(Disabled ? "disabled" : "") @(IsSelected ? "selected" : "")"
-     @onclick="HandleClick">
+<div class="game-card @Card.Type.ToString().ToLower() @(Disabled ? "disabled" : "") @(IsSelected ? "selected" : "") @(IsRevealed ? "revealed" : "")" @onclick="HandleClick">
 
     <div class="card-image">
         <div class="card-cost">
@@ -33,6 +32,9 @@
 
     [Parameter]
     public bool IsSelected { get; set; }
+
+    [Parameter] 
+    public bool IsRevealed { get; set; }
 
     private async Task HandleClick()
     {

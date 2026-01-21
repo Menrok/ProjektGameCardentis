@@ -3,5 +3,8 @@ namespace ProjektGameCardentis.Entities.Cards;
 public enum CardEffect
 {
     DealDamage,
-    GainDefense
+    GainDefense,
+    DrawCard,
+    RestoreEnergy,
+    None
 }

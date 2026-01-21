@@ -2,74 +2,73 @@
 
 ## Architektura aplikacji
 
-Aplikacja zosta³a zaprojektowana w oparciu o architekturê warstwow¹, która rozdziela odpowiedzialnoœci pomiêdzy poszczególne czêœci systemu:
+Aplikacja zostaÅ‚a zaprojektowana w oparciu o architekturÄ™ warstwowÄ…, ktÃ³ra rozdziela odpowiedzialnoÅ›ci pomiÄ™dzy poszczegÃ³lne czÄ™Å›ci systemu:
 
-- **Server** – interfejs u¿ytkownika, hosting aplikacji oraz komunikacja SignalR
-- **Application** – logika aplikacyjna oraz przypadki u¿ycia
-- **Domain** – logika domenowa gry, regu³y oraz encje
-- **Infrastructure** – dostêp do danych oraz mechanizmy trwa³oœci (EF Core, SQLite)
+- **Server** â€“ interfejs uÅ¼ytkownika, hosting aplikacji oraz komunikacja w czasie rzeczywistym (SignalR)
+- **Application** â€“ logika aplikacyjna oraz obsÅ‚uga przypadkÃ³w uÅ¼ycia
+- **Domain** â€“ logika domenowa gry, reguÅ‚y rozgrywki oraz encje
+- **Infrastructure** â€“ dostÄ™p do danych oraz mechanizmy trwaÅ‚oÅ›ci (Entity Framework Core, SQLite)
 
-Zastosowany podzia³ zwiêksza czytelnoœæ kodu, u³atwia utrzymanie projektu oraz pozwala na jego dalsz¹ rozbudowê.
+Zastosowany podziaÅ‚ zwiÄ™ksza czytelnoÅ›Ä‡ kodu, uÅ‚atwia utrzymanie projektu oraz umoÅ¼liwia jego dalszÄ… rozbudowÄ™.
 
 ---
 
-## G³ówne mechaniki gry
+## GÅ‚Ã³wne mechaniki gry
 
 ### System kart
 
-Ka¿da karta reprezentuje jedno z dzia³añ:
+KaÅ¼da karta reprezentuje jedno z dziaÅ‚aÅ„:
 - atak,
-- obronê,
-- umiejêtnoœæ specjaln¹,
-- efekt pasywny.
+- obronÄ™,
+- umiejÄ™tnoÅ›Ä‡ specjalnÄ….
 
-Karty posiadaj¹:
-- koszt u¿ycia,
-- rzadkoœæ,
-- okreœlony efekt dzia³ania.
+Karty posiadajÄ…:
+- koszt uÅ¼ycia,
+- okreÅ›lony efekt dziaÅ‚ania.
 
-Gracz buduje i modyfikuje w³asn¹ taliê kart, która wykorzystywana jest podczas walki.
+Gracz buduje i modyfikuje wÅ‚asnÄ… taliÄ™ kart, ktÃ³ra wykorzystywana jest podczas walki.
 
 ---
 
 ### System walki
 
-Rozgrywka oparta jest na turowym systemie walki pomiêdzy dwoma graczami (multiplayer 1v1).
+Rozgrywka oparta jest na turowym systemie walki pomiÄ™dzy dwoma graczami.
 
-W ka¿dej turze gracz:
-- dobiera karty do rêki,
-- zagrywa karty z rêki,
-- zarz¹dza dostêpnymi zasobami (np. energia lub mana).
+W kaÅ¼dej rundzie gracze:
+- dobierajÄ… karty do rÄ™ki,
+- wybierajÄ… karty do zagrania,
+- zarzÄ…dzajÄ… dostÄ™pnymi zasobami (np. energia).
 
-Logika walki realizowana jest po stronie serwera, co zapewnia spójnoœæ i poprawnoœæ rozgrywki.
+Po zaplanowaniu tury przez obie strony nastÄ™puje wspÃ³lne ujawnienie kart oraz rozliczenie rundy w sposÃ³b deterministyczny.
+
+Logika walki realizowana jest po stronie serwera, co zapewnia spÃ³jnoÅ›Ä‡ i poprawnoÅ›Ä‡ rozgrywki.
 
 ---
 
 ### System postaci
 
-Postaæ gracza posiada podstawowe statystyki:
-- zdrowie,
-- atak,
-- obronê,
-- dodatkowe modyfikatory wynikaj¹ce z kart lub efektów.
+PostaÄ‡ gracza posiada podstawowe statystyki:
+- punkty zdrowia,
+- aktualny poziom energii,
+- modyfikatory wynikajÄ…ce z kart oraz efektÃ³w.
 
-Rozwój postaci odbywa siê poprzez:
+RozwÃ³j postaci realizowany jest poprzez:
 - zdobywanie nowych kart,
-- ulepszanie posiadanych kart,
-- postêp w rozgrywce.
+- modyfikacjÄ™ i rozbudowÄ™ talii,
+- postÄ™p w rozgrywce.
 
 ---
 
-### Sklep
+### Sklep (planowany)
 
-Sklep dostêpny jest pomiêdzy rozgrywkami.
+Sklep stanowi planowany element gry dostÄ™pny pomiÄ™dzy rozgrywkami.
 
-Gracz ma mo¿liwoœæ:
+Docelowo gracz bÄ™dzie miaÅ‚ moÅ¼liwoÅ›Ä‡:
 - kupowania kart,
 - sprzedawania kart,
 - ulepszania kart.
 
-Waluta wykorzystywana w sklepie zdobywana jest podczas rozgrywek.
+Waluta wykorzystywana w sklepie zdobywana bÄ™dzie podczas rozgrywek.
 
 ---
 
@@ -77,39 +76,38 @@ Waluta wykorzystywana w sklepie zdobywana jest podczas rozgrywek.
 
 ### Gracz
 
-Gracz jest g³ównym aktorem systemu i odpowiada za:
-- rozpoczêcie i prowadzenie rozgrywki,
-- udzia³ w pojedynkach multiplayer 1v1,
-- zarz¹dzanie tali¹ kart oraz postaci¹,
-- podejmowanie decyzji strategicznych podczas gry.
+Gracz jest gÅ‚Ã³wnym aktorem systemu i odpowiada za:
+- prowadzenie rozgrywki,
+- udziaÅ‚ w pojedynkach,
+- zarzÄ…dzanie taliÄ… kart oraz postaciÄ…,
+- podejmowanie decyzji strategicznych.
 
 ---
 
 ### Administrator (systemowy)
 
 Administrator jest aktorem technicznym systemu i odpowiada za:
-- zarz¹dzanie danymi gry, w tym kartami oraz ich parametrami,
-- konfiguracjê i balans rozgrywki.
+- zarzÄ…dzanie danymi gry (np. kartami oraz ich parametrami),
+- konfiguracjÄ™ i balans rozgrywki.
 
-Administrator nie bierze bezpoœredniego udzia³u w rozgrywce.
+Administrator nie bierze bezpoÅ›redniego udziaÅ‚u w rozgrywce.
 
 ---
 
-## Interfejs u¿ytkownika
+## Interfejs uÅ¼ytkownika
 
-Interfejs u¿ytkownika zosta³ zaprojektowany jako aplikacja webowa typu SPA.
+Interfejs uÅ¼ytkownika zostaÅ‚ zaprojektowany jako aplikacja webowa typu SPA.
 
-UI zawiera nastêpuj¹ce widoki:
-- ekran g³ówny (menu),
+UI zawiera nastÄ™pujÄ…ce widoki:
+- ekran gÅ‚Ã³wny (menu),
 - ekran rozgrywki (walka),
 - widok talii kart,
-- ekran sklepu,
 - podstawowe komunikaty systemowe.
 
-Interfejs u¿ytkownika jest:
+Interfejs uÅ¼ytkownika jest:
 - prosty i intuicyjny,
 - czytelny,
-- w pe³ni przystosowany do dzia³ania w przegl¹darce internetowej.
+- przystosowany do dziaÅ‚ania w przeglÄ…darce internetowej.
 
 ---
 
@@ -117,17 +115,17 @@ Interfejs u¿ytkownika jest:
 
 ### Multiplayer
 
-Podstawowym trybem gry jest multiplayer 1v1, w którym dwóch graczy rywalizuje ze sob¹ w czasie rzeczywistym.
+Podstawowym trybem gry jest tryb multiplayer 1v1, w ktÃ³rym dwÃ³ch graczy rywalizuje ze sobÄ… w czasie rzeczywistym.
 
 Rozgrywka:
 - oparta jest na systemie turowym,
-- odbywa siê pomiêdzy dwoma graczami po³¹czonymi z serwerem,
-- synchronizowana jest w czasie rzeczywistym.
+- synchronizowana jest przez serwer,
+- wykorzystuje komunikacjÄ™ w czasie rzeczywistym (SignalR).
 
 ---
 
 ### Singleplayer (opcjonalny)
 
-Opcjonalny tryb singleplayer umo¿liwia rozgrywkê przeciwko przeciwnikowi sterowanemu przez system.
+Opcjonalny tryb singleplayer umoÅ¼liwia rozgrywkÄ™ przeciwko przeciwnikowi sterowanemu przez system.
 
-Tryb ten mo¿e zostaæ zaimplementowany jako rozszerzenie projektu.
+Tryb ten moÅ¼e zostaÄ‡ zaimplementowany jako rozszerzenie projektu.

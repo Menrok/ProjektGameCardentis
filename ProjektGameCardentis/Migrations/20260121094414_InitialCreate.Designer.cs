@@ -11,7 +11,7 @@ using ProjektGameCardentis.Data;
 namespace ProjektGameCardentis.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260116134606_InitialCreate")]
+    [Migration("20260121094414_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
